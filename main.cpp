@@ -908,6 +908,6 @@ int main(int argc, char *argv[])
         curline++;
     }
     fs.close();
-	system("PAUSE");
+	//system("PAUSE");
     return 0;
 }
