@@ -20,9 +20,9 @@ map<string, int> labels;
 map<string, int> pointers;
 int heapptr = 0;
 int state = 0;
-int main()
+int main(int argc, char *argv[])
 {
-    ifstream fs("test2.txt");
+    ifstream fs(argv[1]);
 	//cout << boolalpha << fs.rdbuf()->is_open() << endl;
 	//int ttt;
 	//cin >> ttt;
