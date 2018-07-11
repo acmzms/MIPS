@@ -39,6 +39,7 @@ int main(int argc, char *argv[])
 	registers[29] = 4194304;
 	int runpos = 1, y = 1;
 	ifstream fs(argv[1]);
+	//ifstream fs("test2.txt");
 	while (1)
 	{
 		y = readline(fs, state);
@@ -456,6 +457,8 @@ int main(int argc, char *argv[])
 		if (code[curline].type == SYSCALL)
 		{
 			int com = registers[2];
+			//if (com == 4)
+				//cout << "???\t\t\t";
 			int ret = syscall(com);
 			if (ret == 0) break;
 		}
@@ -466,7 +469,7 @@ int main(int argc, char *argv[])
 			curline = pos;
 			continue;
 		}
-		if (code[curline].type == BEQZ)
+		if (code[curline].type == BEQ)
 		{
 			int d1 = code[curline].cont[1];
 			int d2 = code[curline].cont[2];
