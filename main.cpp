@@ -13,6 +13,7 @@ enum regis
 	ZERO, AT, V0, V1, A0, A1, A2, A3, T0, T1, T2, T3, T4, T5, T6, T7, S0,
 	S1, S2, S3, S4, S5, S6, S7, T8, T9, GP, SP, FP, RA, HI, LO, PC
 };
+extern enum command;
 vector<line> code;
 char memory[4194312] = { 0 };
 int registers[36] = { 0 };
@@ -42,12 +43,12 @@ int main(int argc, char *argv[])
 	{
 		y = readline(fs, state);
 		if (y == 0) break;
-		if (code[curline].type == "main")
+		if (code[curline].type == MAIN)
 		{
 			runpos = curline;
 		}
-		if (code[curline].type == ".data") state = 0;
-		if (code[curline].type == ".text") state = 1;
+		if (code[curline].type == DATA) state = 0;
+		if (code[curline].type == TEXT) state = 1;
 		//cout << "command: " << code[curline].type << "\t\t\t\t";
 		//cout << "curline: " << curline << '\n';
 		curline++;
@@ -56,7 +57,7 @@ int main(int argc, char *argv[])
 	curline = runpos;
 	while (curline < endline)
 	{
-		if (code[curline].type == "add")
+		if (code[curline].type == ADD)
 		{
 			int op = code[curline].cont[0];
 			int d = code[curline].cont[1];
@@ -65,7 +66,7 @@ int main(int argc, char *argv[])
 			if (op == 1) registers[d] = registers[d1] + registers[d2];
 			if (op == 0) registers[d] = registers[d1] + d2;
 		}
-		if (code[curline].type == "addu")
+		if (code[curline].type == ADDU)
 		{
 			int op = code[curline].cont[0];
 			int d = code[curline].cont[1];
@@ -74,7 +75,7 @@ int main(int argc, char *argv[])
 			if (op == 1) registers[d] = (unsigned int)(registers[d1] + registers[d2]);
 			if (op == 0) registers[d] = (unsigned int)(registers[d1] + d2);
 		}
-		if (code[curline].type == "addiu")
+		if (code[curline].type == ADDIU)
 		{
 			int op = code[curline].cont[0];
 			int d = code[curline].cont[1];
@@ -83,7 +84,7 @@ int main(int argc, char *argv[])
 			if (op == 1) registers[d] = (unsigned int)(registers[d1] + registers[d2]);
 			if (op == 0) registers[d] = (unsigned int)(registers[d1] + d2);
 		}
-		if (code[curline].type == "sub")
+		if (code[curline].type == SUB)
 		{
 			int op = code[curline].cont[0];
 			int d = code[curline].cont[1];
@@ -92,7 +93,7 @@ int main(int argc, char *argv[])
 			if (op == 1) registers[d] = registers[d1] - registers[d2];
 			if (op == 0) registers[d] = registers[d1] - d2;
 		}
-		if (code[curline].type == "subu")
+		if (code[curline].type == SUBU)
 		{
 			int op = code[curline].cont[0];
 			int d = code[curline].cont[1];
@@ -101,7 +102,7 @@ int main(int argc, char *argv[])
 			if (op == 1) registers[d] = (unsigned int)(registers[d1] - registers[d2]);
 			if (op == 0) registers[d] = (unsigned int)(registers[d1] - d2);
 		}
-		if (code[curline].type == "mul")
+		if (code[curline].type == MUL)
 		{
 			if (code[curline].cont.size() == 4)
 			{
@@ -117,7 +118,7 @@ int main(int argc, char *argv[])
 				int op = code[curline].cont[0];
 				int d1 = code[curline].cont[1];
 				int d2 = code[curline].cont[2];
-				if (op == 1) 
+				if (op == 1)
 				{
 					registers[33] = (registers[d1] * registers[d2]) % 4294967296;
 					registers[32] = (registers[d1] * registers[d2]) / 4294967296;
@@ -129,7 +130,7 @@ int main(int argc, char *argv[])
 				}
 			}
 		}
-		if (code[curline].type == "mulu")
+		if (code[curline].type == MULU)
 		{
 			if (code[curline].cont.size() == 4)
 			{
@@ -157,7 +158,7 @@ int main(int argc, char *argv[])
 				}
 			}
 		}
-		if (code[curline].type == "div")
+		if (code[curline].type == DIV)
 		{
 			if (code[curline].cont.size() == 4)
 			{
@@ -185,7 +186,7 @@ int main(int argc, char *argv[])
 				}
 			}
 		}
-		if (code[curline].type == "divu")
+		if (code[curline].type == DIVU)
 		{
 			if (code[curline].cont.size() == 4)
 			{
@@ -213,7 +214,7 @@ int main(int argc, char *argv[])
 				}
 			}
 		}
-		if (code[curline].type == "xor")
+		if (code[curline].type == XOR)
 		{
 			int op = code[curline].cont[0];
 			int d = code[curline].cont[1];
@@ -222,7 +223,7 @@ int main(int argc, char *argv[])
 			if (op == 1) registers[d] = registers[d1] ^ registers[d2];
 			if (op == 0) registers[d] = registers[d1] ^ d2;
 		}
-		if (code[curline].type == "xoru")
+		if (code[curline].type == XORU)
 		{
 			int op = code[curline].cont[0];
 			int d = code[curline].cont[1];
@@ -231,19 +232,19 @@ int main(int argc, char *argv[])
 			if (op == 1) registers[d] = (unsigned int)(registers[d1] ^ registers[d2]);
 			if (op == 0) registers[d] = (unsigned int)(registers[d1] ^  d2);
 		}
-		if (code[curline].type == "neg")
+		if (code[curline].type == NEG)
 		{
 			int d = code[curline].cont[0];
 			int d1 = code[curline].cont[1];
 			registers[d] = -registers[d1];
 		}
-		if (code[curline].type == "negu")
+		if (code[curline].type == NEGU)
 		{
 			int d = code[curline].cont[0];
 			int d1 = code[curline].cont[1];
 			registers[d] = (unsigned int)(~registers[d1]);
 		}
-		if (code[curline].type == "rem")
+		if (code[curline].type == REM)
 		{
 			int op = code[curline].cont[0];
 			int d = code[curline].cont[1];
@@ -252,7 +253,7 @@ int main(int argc, char *argv[])
 			if (op == 1) registers[d] = registers[d1] % registers[d2];
 			if (op == 0) registers[d] = registers[d1] % d2;
 		}
-		if (code[curline].type == "remu")
+		if (code[curline].type == REMU)
 		{
 			int op = code[curline].cont[0];
 			int d = code[curline].cont[1];
@@ -261,13 +262,13 @@ int main(int argc, char *argv[])
 			if (op == 1) registers[d] = (unsigned int)(registers[d1] % registers[d2]);
 			if (op == 0) registers[d] = (unsigned int)(registers[d1] % d2);
 		}
-		if (code[curline].type == "li")
+		if (code[curline].type == LI)
 		{
 			int d = code[curline].cont[0];
 			int imm = code[curline].cont[1];
 			registers[d] = imm;
 		}
-		if (code[curline].type == "seq")
+		if (code[curline].type == SEQ)
 		{
 			int op = code[curline].cont[0];
 			int d = code[curline].cont[1];
@@ -276,7 +277,7 @@ int main(int argc, char *argv[])
 			if (op == 1) registers[d] = (registers[d1] == registers[d2]);
 			if (op == 0) registers[d] = (registers[d1] == d2);
 		}
-		if (code[curline].type == "sge")
+		if (code[curline].type == SGE)
 		{
 			int op = code[curline].cont[0];
 			int d = code[curline].cont[1];
@@ -285,7 +286,7 @@ int main(int argc, char *argv[])
 			if (op == 1) registers[d] = (registers[d1] >= registers[d2]);
 			if (op == 0) registers[d] = (registers[d1] >= d2);
 		}
-		if (code[curline].type == "sgt")
+		if (code[curline].type == SGT)
 		{
 			int op = code[curline].cont[0];
 			int d = code[curline].cont[1];
@@ -294,7 +295,7 @@ int main(int argc, char *argv[])
 			if (op == 1) registers[d] = (registers[d1] > registers[d2]);
 			if (op == 0) registers[d] = (registers[d1] > d2);
 		}
-		if (code[curline].type == "sle")
+		if (code[curline].type == SLE)
 		{
 			int op = code[curline].cont[0];
 			int d = code[curline].cont[1];
@@ -303,7 +304,7 @@ int main(int argc, char *argv[])
 			if (op == 1) registers[d] = (registers[d1] <= registers[d2]);
 			if (op == 0) registers[d] = (registers[d1] <= d2);
 		}
-		if (code[curline].type == "slt")
+		if (code[curline].type == SLT)
 		{
 			int op = code[curline].cont[0];
 			int d = code[curline].cont[1];
@@ -312,7 +313,7 @@ int main(int argc, char *argv[])
 			if (op == 1) registers[d] = (registers[d1] < registers[d2]);
 			if (op == 0) registers[d] = (registers[d1] < d2);
 		}
-		if (code[curline].type == "sne")
+		if (code[curline].type == SNE)
 		{
 			int op = code[curline].cont[0];
 			int d = code[curline].cont[1];
@@ -321,7 +322,7 @@ int main(int argc, char *argv[])
 			if (op == 1) registers[d] = (registers[d1] != registers[d2]);
 			if (op == 0) registers[d] = (registers[d1] != d2);
 		}
-		if (code[curline].type == "la")
+		if (code[curline].type == LA)
 		{
 			int d = code[curline].cont[0];
 			int add;
@@ -337,7 +338,7 @@ int main(int argc, char *argv[])
 			}
 			registers[d] = add;
 		}
-		if (code[curline].type == "lb")
+		if (code[curline].type == LB)
 		{
 			int d = code[curline].cont[0];
 			int add;
@@ -354,7 +355,7 @@ int main(int argc, char *argv[])
 			registers[d] = 0;
 			memcpy(&registers[d], &memory[add], 1);
 		}
-		if (code[curline].type == "lh")
+		if (code[curline].type == LH)
 		{
 			int d = code[curline].cont[0];
 			int add;
@@ -371,7 +372,7 @@ int main(int argc, char *argv[])
 			registers[d] = 0;
 			memcpy(&registers[d], &memory[add], 2);
 		}
-		if (code[curline].type == "lw")
+		if (code[curline].type == LW)
 		{
 			int d = code[curline].cont[0];
 			int add;
@@ -388,7 +389,7 @@ int main(int argc, char *argv[])
 			registers[d] = 0;
 			memcpy(&registers[d], &memory[add], 4);
 		}
-		if (code[curline].type == "sb")
+		if (code[curline].type == SB)
 		{
 			int d = code[curline].cont[0];
 			int add;
@@ -404,7 +405,7 @@ int main(int argc, char *argv[])
 			}
 			memcpy(&memory[add], &registers[d], 1);
 		}
-		if (code[curline].type == "sh")
+		if (code[curline].type == SH)
 		{
 			int d = code[curline].cont[0];
 			int add;
@@ -420,7 +421,7 @@ int main(int argc, char *argv[])
 			}
 			memcpy(&memory[add], &registers[d], 2);
 		}
-		if (code[curline].type == "sw")
+		if (code[curline].type == SW)
 		{
 			int d = code[curline].cont[0];
 			int add;
@@ -436,36 +437,36 @@ int main(int argc, char *argv[])
 			}
 			memcpy(&memory[add], &registers[d], 4);
 		}
-		if (code[curline].type == "move")
+		if (code[curline].type == MOVE)
 		{
 			int d = code[curline].cont[0];
 			int d1 = code[curline].cont[1];
 			registers[d] = registers[d1];
 		}
-		if (code[curline].type == "mfhi")
+		if (code[curline].type == MFHI)
 		{
 			int d = code[curline].cont[0];
 			registers[d] = registers[32];
 		}
-		if (code[curline].type == "mflo")
+		if (code[curline].type == MFLO)
 		{
 			int d = code[curline].cont[0];
 			registers[d] = registers[33];
 		}
-		if (code[curline].type == "syscall")
+		if (code[curline].type == SYSCALL)
 		{
 			int com = registers[2];
 			int ret = syscall(com);
 			if (ret == 0) break;
 		}
-		if (code[curline].type == "b")
+		if (code[curline].type == B)
 		{
 			int lab = code[curline].cont[0];
 			int pos = labval[lab];
 			curline = pos;
 			continue;
 		}
-		if (code[curline].type == "beq")
+		if (code[curline].type == BEQZ)
 		{
 			int d1 = code[curline].cont[1];
 			int d2 = code[curline].cont[2];
@@ -486,7 +487,7 @@ int main(int argc, char *argv[])
 				continue;
 			}
 		}
-		if (code[curline].type == "bne")
+		if (code[curline].type == BNE)
 		{
 			int d1 = code[curline].cont[1];
 			int d2 = code[curline].cont[2];
@@ -507,7 +508,7 @@ int main(int argc, char *argv[])
 				continue;
 			}
 		}
-		if (code[curline].type == "bge")
+		if (code[curline].type == BGE)
 		{
 			int d1 = code[curline].cont[1];
 			int d2 = code[curline].cont[2];
@@ -528,7 +529,7 @@ int main(int argc, char *argv[])
 				continue;
 			}
 		}
-		if (code[curline].type == "ble")
+		if (code[curline].type == BLE)
 		{
 			int d1 = code[curline].cont[1];
 			int d2 = code[curline].cont[2];
@@ -549,7 +550,7 @@ int main(int argc, char *argv[])
 				continue;
 			}
 		}
-		if (code[curline].type == "bgt")
+		if (code[curline].type == BGT)
 		{
 			int d1 = code[curline].cont[1];
 			int d2 = code[curline].cont[2];
@@ -570,7 +571,7 @@ int main(int argc, char *argv[])
 				continue;
 			}
 		}
-		if (code[curline].type == "blt")
+		if (code[curline].type == BLT)
 		{
 			int d1 = code[curline].cont[1];
 			int d2 = code[curline].cont[2];
@@ -591,7 +592,7 @@ int main(int argc, char *argv[])
 				continue;
 			}
 		}
-		if (code[curline].type == "beqz")
+		if (code[curline].type == BEQZ)
 		{
 			int d = code[curline].cont[0];
 			int r = registers[d];
@@ -603,7 +604,7 @@ int main(int argc, char *argv[])
 				continue;
 			}
 		}
-		if (code[curline].type == "bnez")
+		if (code[curline].type == BNEZ)
 		{
 			int d = code[curline].cont[0];
 			int r = registers[d];
@@ -615,7 +616,7 @@ int main(int argc, char *argv[])
 				continue;
 			}
 		}
-		if (code[curline].type == "blez")
+		if (code[curline].type == BLEZ)
 		{
 			int d = code[curline].cont[0];
 			int r = registers[d];
@@ -627,7 +628,7 @@ int main(int argc, char *argv[])
 				continue;
 			}
 		}
-		if (code[curline].type == "bgez")
+		if (code[curline].type == BGEZ)
 		{
 			int d = code[curline].cont[0];
 			int r = registers[d];
@@ -639,7 +640,7 @@ int main(int argc, char *argv[])
 				continue;
 			}
 		}
-		if (code[curline].type == "bgtz")
+		if (code[curline].type == BGTZ)
 		{
 			int d = code[curline].cont[0];
 			int r = registers[d];
@@ -651,7 +652,7 @@ int main(int argc, char *argv[])
 				continue;
 			}
 		}
-		if (code[curline].type == "bltz")
+		if (code[curline].type == BLTZ)
 		{
 			int d = code[curline].cont[0];
 			int r = registers[d];
@@ -663,14 +664,14 @@ int main(int argc, char *argv[])
 				continue;
 			}
 		}
-		if (code[curline].type == "j")
+		if (code[curline].type == J)
 		{
 			int lab = code[curline].cont[0];
 			int pos = labval[lab];
 			curline = pos;
 			continue;
 		}
-		if (code[curline].type == "jal")
+		if (code[curline].type == JAL)
 		{
 			registers[31] = curline + 1;
 			int lab = code[curline].cont[0];
@@ -678,14 +679,14 @@ int main(int argc, char *argv[])
 			curline = pos;
 			continue;
 		}
-		if (code[curline].type == "jr")
+		if (code[curline].type == JR)
 		{
 			int d = code[curline].cont[0];
 			int pos = registers[d];
 			curline = pos;
 			continue;
 		}
-		if (code[curline].type == "jalr")
+		if (code[curline].type == JALR)
 		{
 			registers[31] = curline + 1;
 			int d = code[curline].cont[0];

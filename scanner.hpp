@@ -13,6 +13,10 @@ extern vector<int> labval;
 extern vector<int> ptrval;
 extern int curline, heapptr;
 int curlabel = 0, curpointer = 0;
+enum command{ALIGN = 233, ASCII, ASCIIZ, BYTE, HALF, WORD, SPACE, DATA, TEXT, ADD, ADDU, ADDIU, SUB, SUBU, MUL, 
+MULU, DIV, DIVU, XOR, XORU, NEG, NEGU, REM, REMU, LI, SEQ, SGE, SGT, SLE, SLT, SNE, B, BEQ, BNE, BGE, BLE, BGT, 
+BLT, BEQZ, BNEZ, BLEZ, BGEZ, BGTZ, BLTZ, J, JR, JAL, JALR, LA, LB, LH, LW, SB, SH, SW, MOVE, MFHI, MFLO, NOP, 
+SYSCALL, MAIN = 666};
 bool readline(ifstream& fs, int sys)
 {
     string tot;
@@ -39,7 +43,7 @@ bool readline(ifstream& fs, int sys)
 		}
 		tmp.pop_back();
 		ascii(tmp);
-		line l(typ, vi);
+		line l(ASCII, vi);
 		code.push_back(l);
 		return 1;
 	}
@@ -54,7 +58,7 @@ bool readline(ifstream& fs, int sys)
 		}
 		tmp.pop_back();
 		asciiz(tmp);
-		line l(typ, vi);
+		line l(ASCIIZ, vi);
 		code.push_back(l);
 		return 1;
 	}
@@ -328,7 +332,69 @@ bool readline(ifstream& fs, int sys)
 		vi.push_back(d);
 		vi.push_back(pos);
 	}
-	line l(typ, vi);
+	int com = 0;
+	if (typ == ".align") com = ALIGN;
+	if (typ == ".ascii") com = ASCII;
+	if (typ == ".asciiz") com = ASCIIZ;
+	if (typ == ".byte") com = BYTE;
+	if (typ == ".half") com = HALF;
+	if (typ == ".word") com = WORD;
+	if (typ == ".space") com = SPACE;
+	if (typ == ".data") com = DATA;
+	if (typ == ".text") com = TEXT;
+	if (typ == "add") com = ADD;
+	if (typ == "addu") com = ADDU;
+	if (typ == "addiu") com = ADDIU;
+	if (typ == "sub") com = SUB; 
+	if (typ == "subu") com = SUBU;
+	if (typ == "mul") com = MUL; 
+	if (typ == "mulu") com = MULU;
+	if (typ == "div") com = DIV;
+	if (typ == "divu") com = DIVU;
+	if (typ == "xor") com = XOR;
+	if (typ == "xoru") com = XORU;
+	if (typ == "neg") com = NEG;
+	if (typ == "negu") com = NEGU;
+	if (typ == "rem") com = REM;
+	if (typ == "remu") com = REMU;
+	if (typ == "li") com = LI;
+	if (typ == "seq") com = SEQ;
+	if (typ == "sge") com = SGE;
+	if (typ == "sgt") com = SGT;
+	if (typ == "sle") com = SLE;
+	if (typ == "slt") com = SLT;
+	if (typ == "sne") com = SNE;
+	if (typ == "b") com = B;
+	if (typ == "beq") com = BEQ;
+	if (typ == "bne") com = BNE;
+	if (typ == "bge") com = BGE;
+	if (typ == "ble") com = BLE;
+	if (typ == "bgt") com = BGT;
+	if (typ == "blt") com = BLT;
+	if (typ == "beqz") com = BEQZ;
+	if (typ == "bnez") com = BNEZ;
+	if (typ == "blez") com = BLEZ;
+	if (typ == "bgez") com = BGEZ;
+	if (typ == "bgtz") com = BGTZ;
+	if (typ == "bltz") com = BLTZ;
+	if (typ == "j") com = J;
+	if (typ == "jr") com = JR;
+	if (typ == "jal") com = JAL;
+	if (typ == "jalr") com = JALR;
+	if (typ == "la") com = LA;
+	if (typ == "lb") com = LB;
+	if (typ == "lh") com = LH;
+	if (typ == "lw") com = LW;
+	if (typ == "sb") com = SB;
+	if (typ == "sh") com = SH;
+	if (typ == "sw") com = SW;
+	if (typ == "move") com = MOVE;
+	if (typ == "mfhi") com = MFHI;
+	if (typ == "mflo") com = MFLO;
+	if (typ == "nop") com = NOP;
+	if (typ == "syscall") com = SYSCALL;
+	if (typ == "main") com = MAIN;
+	line l(com, vi);
     code.push_back(l);
     return 1;
 }

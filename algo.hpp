@@ -12,10 +12,10 @@
 using namespace std;
 struct line
 {
-    string type;
+    int type;
     vector<int> cont;
     line() = default;
-    line(string a, vector<int> b): type(a), cont(b){}
+    line(int a, vector<int> b): type(a), cont(b){}
 };
 
 int stringtot(string s)
