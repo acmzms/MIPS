@@ -38,90 +38,11 @@ void asciiz(string str)
     heapptr++;
 }
 
-/*void byte(vector<int> vi)
-{
-    for(size_t i = 0;i < vi.size();i++)
-    {
-        memory[heapptr] = bytetochar(vi[i]);
-        heapptr++;
-    }
-}
-
-void half(vector<int> vi)
-{
-    for(size_t i = 0;i < vi.size();i++)
-    {
-        unsigned char uc[2];
-        halftochar(vi[i], uc);
-        memory[heapptr] = uc[0];
-        heapptr++;
-        memory[heapptr] = uc[1];
-        heapptr++;
-    }
-}
-
-void word(vector<int> vi)
-{
-    for(size_t i = 0;i < vi.size();i++)
-    {
-        unsigned char uc[4];
-        wordtochar(vi[i], uc);
-        memory[heapptr] = uc[0];
-        heapptr++;
-        memory[heapptr] = uc[1];
-        heapptr++;
-        memory[heapptr] = uc[2];
-        heapptr++;
-        memory[heapptr] = uc[3];
-        heapptr++;
-    }
-}*/
 
 void space(int n)
 {
     heapptr += n;
 }
-
-/*int loadb(int pos)
-{
-    return chartobyte(memory[pos]);
-}
-
-int loadh(int pos)
-{
-    return chartohalf(memory[pos], memory[pos + 1]);
-}
-
-int loadw(int pos)
-{
-    return chartoword(memory[pos], memory[pos + 1], memory[pos + 2], memory[pos + 3]);
-}
-
-void storeb(int rsrc, int pos)
-{
-	int x = registers[rsrc];
-    memory[pos] = bytetochar(x);
-}
-
-void storeh(int rsrc, int pos)
-{
-    unsigned char uc[2];
-	int x = registers[rsrc];
-    halftochar(x, uc);
-    memory[pos] = uc[0];
-    memory[pos + 1] = uc[1];
-}
-
-void storew(int rsrc, int pos)
-{
-    unsigned char uc[4];
-	int x = registers[rsrc];
-    wordtochar(x, uc);
-    memory[pos] = uc[0];
-    memory[pos + 1] = uc[1];
-    memory[pos + 2] = uc[2];
-    memory[pos + 3] = uc[3];
-}*/
 
 int syscall(int type)
 {

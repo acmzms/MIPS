@@ -13,66 +13,15 @@ using namespace std;
 struct line
 {
     string type;
-    vector<string> cont;
+    vector<int> cont;
     line() = default;
-    line(string a, vector<string> b): type(a), cont(b){}
+    line(string a, vector<int> b): type(a), cont(b){}
 };
 
-/*unsigned char bytetochar(int b)
-{
-	if (b < 0)
-	{
-		b += 256;
-	}
-    return (unsigned char) b;
-}
-
-unsigned char* halftochar(int b, unsigned char uc[2])
-{
-	if (b < 0)
-	{
-		b += 65536;
-	}
-    uc[1] = (unsigned char)(b / 256);
-    uc[0] = (unsigned char)(b % 256);
-    return uc;
-}
-
-unsigned char* wordtochar(int b, unsigned char uc[4])
-{
-	unsigned int u = b;
-    uc[3] = (unsigned char)(u / 16777216);
-    uc[2] = (unsigned char)(u / 65536 % 256);
-    uc[1] = (unsigned char)(u / 256 % 256);
-    uc[0] = (unsigned char)(u % 256);
-    return uc;
-}
-
-int chartoword(unsigned char c1, unsigned char c2, unsigned char c3, unsigned char c4)
-{
-    return (int)c1 + (int)c2 * 256 + (int)c3 * 65536 + (int)c4 * 167777216;
-}
-
-int chartohalf(unsigned char c1, unsigned char c2)
-{
-    int x = (int)c1 + (int)c2 * 256;
-	if (x > 32768) x -= 65536;
-	return x;
-}
-
-int chartobyte(unsigned char c)
-{
-    int x = (int)c;
-	if (x > 128) x -= 256;
-	return x;
-}
-*/
-
-template <class T>
-T stringtot(string s)
+int stringtot(string s)
 {
     stringstream sst(s);
-    T x;
+    int x;
     sst>>x;
     return x;
 }
@@ -118,7 +67,7 @@ int registoint(string s)
     if(x == "hi") return 32;
     if(x == "lo") return 33;
     if(x == "pc") return 34;
-    else return stringtot<int>(x);
+    else return stringtot(x);
 }
 
 string process(string str)
@@ -174,7 +123,7 @@ int separate(string &str)
 		sts >> c;
 		//cout << '*';
 	}
-	int ret = stringtot<int>(s);
+	int ret = stringtot(s);
 	string rem;
 	sts >> rem;
 	rem.pop_back();
