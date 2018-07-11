@@ -2,6 +2,7 @@
 #define SCANNER
 #include<cstdio>
 #include<iostream>
+#include<cstring>
 #include<sstream>
 #include"algo.hpp"
 using namespace std;

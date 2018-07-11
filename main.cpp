@@ -37,7 +37,7 @@ int main(int argc, char *argv[])
 	code.push_back(xx);
 	registers[29] = 4194304;
 	int runpos = 1, y = 1;
-	ifstream fs(argv[1]);
+	ifstream fs("test2.txt");
 	while (1)
 	{
 		y = readline(fs, state);
@@ -700,7 +700,7 @@ int main(int argc, char *argv[])
 		curline++;
 	}
 	fs.close();
-	//system("PAUSE");
+	system("PAUSE");
 	//getchar();
 	return 0;
 }
