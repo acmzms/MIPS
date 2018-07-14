@@ -14,7 +14,7 @@ struct line
 {
     int type;
     vector<int> cont;
-    line() = default;
+	line() :type(0) { vector<int> vi; cont = vi; }
     line(int a, vector<int> b): type(a), cont(b){}
 };
 

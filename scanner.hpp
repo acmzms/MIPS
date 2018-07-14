@@ -15,8 +15,8 @@ extern int curline, heapptr;
 int curlabel = 0, curpointer = 0;
 enum command{ALIGN = 233, ASCII, ASCIIZ, BYTE, HALF, WORD, SPACE, DATA, TEXT, ADD, ADDU, ADDIU, SUB, SUBU, MUL, 
 MULU, DIV, DIVU, XOR, XORU, NEG, NEGU, REM, REMU, LI, SEQ, SGE, SGT, SLE, SLT, SNE, B, BEQ, BNE, BGE, BLE, BGT, 
-BLT, BEQZ, BNEZ, BLEZ, BGEZ, BGTZ, BLTZ, J, JR, JAL, JALR, LA, LB, LH, LW, SB, SH, SW, MOVE, MFHI, MFLO, NOP, 
-SYSCALL, MAIN = 666};
+BLT, BEQZ, BNEZ, BLEZ, BGEZ, BGTZ, BLTZ, J, JR, JAL, JALR, LA, LB, LH, LW, SB, SH, SW, MOVE, MFHI, MFLO, SYSCALL, 
+MAIN = 666};
 bool readline(ifstream& fs, int sys)
 {
     string tot;
@@ -391,7 +391,7 @@ bool readline(ifstream& fs, int sys)
 	if (typ == "move") com = MOVE;
 	if (typ == "mfhi") com = MFHI;
 	if (typ == "mflo") com = MFLO;
-	if (typ == "nop") com = NOP;
+	//if (typ == "nop") com = NOP;
 	if (typ == "syscall") com = SYSCALL;
 	if (typ == "main") com = MAIN;
 	line l(com, vi);
