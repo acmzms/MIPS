@@ -25,12 +25,11 @@ vector<int> labval;
 vector<int> ptrval;
 int heapptr = 0;
 int state = 0;
-int curline = 1, endline;
+int curline = 1, endline, nextline;
 line fetch()
 {
 	line k;
 	if (curline > endline) return k;
-	//cout << "branch: " << branch << "\t\t\t" << "curline: " << curline << '\n';
 	if (branch == -1)
 	{
 		line l;
@@ -42,8 +41,9 @@ line fetch()
 		curline++;
 		line l = code[curline];
 		//cout << "command: " << l.type << "\tcurline: " << curline  << '\n';
-		//if (curline == 377)
+		//if (curline == 469)
 			//cout << ' ';
+		nextline = curline;
 		return l;
 	}
 	else
@@ -52,6 +52,7 @@ line fetch()
 		line l = code[curline];
 		branch = 0;
 		//cout << "command: " << l.type << "\tcurline: " << curline << '\n';
+		nextline = curline + 1;
 		return l;
 	}
 }
@@ -304,14 +305,21 @@ line decode(line l)
 	if (typ == B || typ == J || typ == JAL)
 	{
 		int pos = labval[l.cont[0]];
-		if(typ == JAL) ret.cont.push_back(curline);
+		if(typ == JAL) ret.cont.push_back(nextline);
 		branch = pos;
 		return ret;
 	}
 	if (typ == JR || typ == JALR)
 	{
-		int pos = registers[l.cont[0]];
-		if(typ == JALR) ret.cont.push_back(curline);
+		int d = l.cont[0];
+		if (reglock[d])
+		{
+			branch = curline;
+			ret.type = 0;
+			return ret;
+		}
+		int pos = registers[d];
+		if(typ == JALR) ret.cont.push_back(nextline);
 		branch = pos;
 		return ret;
 	}
